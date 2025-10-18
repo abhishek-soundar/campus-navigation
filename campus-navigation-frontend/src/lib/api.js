@@ -1,12 +1,12 @@
 // src/lib/api.js
 import axios from 'axios';
 
-// ✅ Dynamically use environment variable (works for dev + prod)
-const baseURL = import.meta.env.VITE_API_BASE_URL
-  ? `${import.meta.env.VITE_API_BASE_URL}/api`
-  : 'http://localhost:3000/api';
+// Use VITE_API_BASE (set in Render / env) with sensible fallback
+const base = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
 
-const API = axios.create({ baseURL });
+const API = axios.create({
+  baseURL: base
+});
 
 // Attach JWT token automatically
 API.interceptors.request.use(
