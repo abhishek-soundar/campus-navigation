@@ -32,6 +32,13 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
+// ✅ Root route for health check and favicon (to stop 404 spam)
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'Campus Navigation API is live', uptime: process.uptime() });
+});
+
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // Routes
 app.use('/', routes);
 app.use('/api/auth', authRoutes);   // ✅ mount auth
