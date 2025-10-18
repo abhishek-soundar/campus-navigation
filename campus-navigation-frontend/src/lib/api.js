@@ -1,9 +1,12 @@
 // src/lib/api.js
 import axios from 'axios';
 
-const API = axios.create({
-  baseURL: 'http://localhost:3000/api' // adjust if your backend uses different port/prefix
-});
+// ✅ Dynamically use environment variable (works for dev + prod)
+const baseURL = import.meta.env.VITE_API_BASE_URL
+  ? `${import.meta.env.VITE_API_BASE_URL}/api`
+  : 'http://localhost:3000/api';
+
+const API = axios.create({ baseURL });
 
 // Attach JWT token automatically
 API.interceptors.request.use(
