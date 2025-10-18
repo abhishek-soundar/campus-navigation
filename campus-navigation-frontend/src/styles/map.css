@@ -1,0 +1,55 @@
+/* src/styles/map.css */
+
+/* Leaflet core import */
+@import 'leaflet/dist/leaflet.css';
+
+/* Map container sizing */
+.leaflet-container {
+  width: 100%;
+  height: 780px; /* increased to give more vertical breathing room */
+  border-radius: 0.5rem;
+}
+
+/* Simple popup styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 0.5rem;
+}
+
+/* Selected marker pulse */
+.marker-selected {
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  70% { transform: scale(1.15); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Ensure leaflet popups readable on light background */
+.leaflet-popup-content, .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  color: #111827 !important;
+  background: #fff !important;
+}
+
+/* Layout helpers for panels on the right column */
+.edges-list {
+  min-width: 340px; /* give edges panel more horizontal room */
+  padding: 0.25rem;
+}
+
+.nodes-list {
+  min-width: 340px;
+  padding: 0.25rem;
+}
+
+/* Slightly larger spacing for items inside panels */
+.edges-list .flex.items-center.justify-between.p-3,
+.nodes-list li {
+  gap: 0.75rem;
+}
+
+/* Make sure map still sits visually below modals */
+.leaflet-container {
+  z-index: 0 !important;
+}

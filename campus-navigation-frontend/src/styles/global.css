@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- THEME TOKENS ---------- */
+:root{
+  /* Dark theme token set */
+  --bg-primary: #0b0f13;        /* cool black background */
+  --bg-elev:    #0f1720;        /* slightly lighter for elevated cards */
+  --card:       #0b1220;        /* card surfaces */
+  --muted:      #9aa6b2;        /* subdued text */
+  --text-primary: #e6eef6;      /* near-white for text */
+  --accent-500: #2563eb;        /* main blue accent */
+  --accent-600: #1e4fdc;        /* stronger */
+  --accent-700: #173fbd;
+  --success:    #10b981;
+  --danger:     #ef4444;
+  --glass:      rgba(255,255,255,0.04);
+  --modal-bg:   rgba(8,12,18,0.85);
+  --focus:      rgba(37,99,235,0.24);
+  --shadow-1:   0 6px 18px rgba(2,6,23,0.6);
+  --shadow-soft: 0 8px 30px rgba(2,6,23,0.45);
+}
+
+/* ---------- GLOBAL LAYOUT & TYPO ---------- */
+/* Use dark theme tokens for the app surface and text by default */
+body {
+  background: linear-gradient(180deg, var(--bg-primary), rgba(6,8,12,1));
+  color: var(--text-primary);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height: 100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* keep a lightweight, consistent transition utility */
+.u-trans { transition: all .18s cubic-bezier(.2,.9,.3,1); }
+.u-soft { transition: background-color .24s, color .18s; }
+
+/* ---------- CARDS / SURFACES ---------- */
+.card-elev {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: var(--shadow-1);
+  color: var(--text-primary);
+}
+
+/* modal surface (dark glass) - general modal container if used */
+.modal-surface {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 12px;
+  padding: 1rem;
+  color: var(--text-primary);
+  z-index: 99999 !important;
+}
+
+/* LIGHT modal card (requested) - card used for input forms/popups */
+.modal-light {
+  background-color: #f3f4f6; /* Tailwind gray-100 (light gray) */
+  color: #111827;            /* Tailwind gray-900 text */
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* If you use class 'app-modal' we style it as requested (light gray card) */
+.app-modal {
+  position: fixed;
+  z-index: 99999 !important; /* very high to beat map */
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: #f3f4f6; /* light gray */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  border-radius: 12px;
+  padding: 1rem;
+  max-width: 90%;
+  width: 540px;
+  color: #111827;
+}
+
+/* Modal overlay */
+.app-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 99990 !important;
+}
+
+/* Ensure panel inside modal is above overlay */
+.app-modal .panel {
+  z-index: 100000 !important;
+}
+
+/* Make sure modal inputs are black text so forms are visible */
+.app-modal input,
+.app-modal select,
+.app-modal textarea,
+.modal-light input,
+.modal-light select,
+.modal-light textarea,
+.modal-surface input,
+.modal-surface select,
+.modal-surface textarea {
+  color: #111827 !important;
+  background: #fff !important;
+}
+
+/* also ensure select/options visible */
+.app-modal select option,
+.modal-light select option,
+.modal-surface select option {
+  color: #111827 !important;
+  background: #fff !important;
+}
+
+/* ---------- FOCUS / ACCESSIBILITY ---------- */
+:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--focus);
+  border-radius: 8px;
+}
+
+/* small responsive helpers */
+@media (max-width: 768px){
+  .layout-main { padding: 1rem; }
+  .modal-surface { width: calc(100% - 2rem); margin: 1rem; }
+}
+
+/* small animation helper */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
+
+/* ---------- MAP / LEAFLET STACKING ---------- */
+/* Ensure map sits below modal by lowering its stacking context */
+.leaflet-container {
+  z-index: 0 !important;
+}
+
+/* If Leaflet panes are covering things, make sure map panes are below */
+.leaflet-pane {
+  z-index: 0 !important;
+}
+
+/* Leaflet popup content default text color (we want black so it's readable against modal-light cards) */
+.leaflet-popup-content, .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  color: #111827 !important;
+  background: #fff !important;
+}
+
+/* ---------- SPECIFIC FIXES: ensure text visible in lists/cards/route details ---------- */
+/* Route details & lists use explicit dark text for readability on light cards */
+.route-details, .edges-list, .nodes-list, .nodes-list li, .route-details * {
+  color: #111827 !important;
+}
+
+/* Inputs/select default color when not in modal (near-white on dark bg) */
+input, select, textarea, button {
+  color: var(--text-primary);
+}
+
+/* But ensure placeholders remain visible */
+input::placeholder, textarea::placeholder {
+  color: rgba(230,238,246,0.6);
+}
+
+/* Ensure options appear as black text in dropdowns shown over modals */
+option { color: #111827 !important; background: #fff !important; }
+
+/* ---------- HELPERS ---------- */
+/* z-index safety for common modal classnames used in multiple places */
+.modal-card, .modal-surface, .modal-light, .app-modal {
+  z-index: 99999 !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+/* keep modals centered & visible on mobile */
+@media (max-width: 640px) {
+  .app-modal { width: calc(100% - 2rem); left: 50%; transform: translate(-50%, -50%); }
+}
+
+/* small utility: shadow for panels */
+.panel-shadow { box-shadow: var(--shadow-soft); }
+body {
+  background-color: #000000;
+  background-image: linear-gradient(147deg, #000000 0%, #434343 74%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white; /* optional, ensures text is readable */
+}
