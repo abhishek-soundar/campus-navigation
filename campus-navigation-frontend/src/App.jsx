@@ -23,19 +23,39 @@ function RedirectIfAuthenticated({ children }) {
   return children;
 }
 
+/**
+ * Return true if this device (browser) has not visited before.
+ * We use a simple localStorage flag "hasVisited" to decide.
+ */
+function isFirstVisitOnThisDevice() {
+  try {
+    return !localStorage.getItem("hasVisited");
+  } catch {
+    return false;
+  }
+}
+
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={
-        <RedirectIfAuthenticated>
-          <Login />
-        </RedirectIfAuthenticated>
-      } />
-      <Route path="/register" element={
-        <RedirectIfAuthenticated>
-          <Register />
-        </RedirectIfAuthenticated>
-      } /> {/* ✅ added */}
+      {/* Root: if first visit on this device -> show Register, otherwise show Login.
+          Wrapped with RedirectIfAuthenticated so logged-in users are routed to their pages. */}
+      <Route
+        path="/"
+        element={
+          <RedirectIfAuthenticated>
+            {isFirstVisitOnThisDevice() ? <Register /> : <Login />}
+          </RedirectIfAuthenticated>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <RedirectIfAuthenticated>
+            <Register />
+          </RedirectIfAuthenticated>
+        }
+      /> {/* ✅ added */}
       <Route
         path="/dashboard"
         element={

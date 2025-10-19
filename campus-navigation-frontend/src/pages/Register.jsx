@@ -1,5 +1,4 @@
-// src/pages/Register.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";  // ✅ add useEffect
 import { useNavigate, Link } from "react-router-dom";
 import API from "../lib/api";
 
@@ -15,6 +14,13 @@ export default function Register() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  // ✅ Mark this device as visited so Register won't show again automatically
+  useEffect(() => {
+    try {
+      localStorage.setItem("hasVisited", "1");
+    } catch {}
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -27,9 +33,9 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const res = await API.post("/auth/register", form);
+      await API.post("/auth/register", form);
       setMessage("✅ Registration successful! Redirecting to login...");
-      setTimeout(() => navigate("/"), 1500); // redirect to login page
+      setTimeout(() => navigate("/"), 1500); // redirect to login
     } catch (err) {
       console.error("Register error:", err);
       setError(err.response?.data?.error || "Registration failed");
