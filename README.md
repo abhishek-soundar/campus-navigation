@@ -4,6 +4,7 @@
 
 A **smart campus navigation system** that helps users find optimal routes within a college campus — complete with **GPS integration, real-time heatmaps, admin management, and authentication**.
 
+
 Built with scalability, performance, and modern design principles in mind.
 ## 🧩 Overview
 
@@ -112,6 +113,10 @@ yaml
 Copy code
 
 ---
+
+Deployment:
+ Live Frontend: https://campus-navigation-2edm.onrender.com
+ Backend API:https://campus-navigation-backend-4h26.onrender.com
 
 ## ⚙️ Installation & Setup
 
